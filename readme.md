@@ -35,19 +35,21 @@ This makes each input comparable to a colored image (like RGB channels), which i
 
 ### Classification Report
 
-| Emotion   | Precision | Recall | F1-Score | Support |
-|-----------|-----------|--------|----------|---------|
-| Angry     | 0.87      | 0.91   | 0.89     | 75      |
-| Calm      | 0.90      | 0.81   | 0.85     | 75      |
-| Disgust   | 0.94      | 0.77   | 0.85     | 39      |
-| Fearful   | 0.73      | 0.81   | 0.77     | 75      |
-| Happy     | 0.79      | 0.79   | 0.79     | 75      |
-| Neutral   | 0.80      | 0.87   | 0.84     | 38      |
-| Sad       | 0.78      | 0.71   | 0.74     | 75      |
-| Surprised | 0.74      | 0.87   | 0.80     | 39      |
+    precision    recall  f1-score   support
 
-- **Macro avg**: 0.82 precision, 0.82 recall, 0.82 f1-score
-- **Weighted avg**: 0.82 precision, 0.81 recall, 0.81 f1-score
+       angry       0.90      0.92      0.91        75
+        calm       0.88      0.92      0.90        75
+     disgust       0.84      0.79      0.82        39
+     fearful       0.82      0.79      0.80        75
+       happy       0.89      0.87      0.88        75
+     neutral       0.85      0.89      0.87        38
+         sad       0.83      0.80      0.82        75
+   surprised       0.76      0.82      0.79        39
+
+    accuracy                           0.85       491
+   macro avg       0.85      0.85      0.85       491
+weighted avg       0.85      0.85      0.85       491
+
 
 ---
 

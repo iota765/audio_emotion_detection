@@ -1,112 +1,96 @@
-# 🎧 Speech Emotion Recognition using CNN and MFCC
-
-This project implements a robust deep learning pipeline to classify human emotions from speech audio. Leveraging **MFCC**, **delta**, and **delta-delta** features combined with **2D CNNs**, the model achieves an impressive **81% accuracy**.    
 
 ---
 
-## 🔍 Evaluation Results
+## 🧠 Model Overview
 
-### 📉 Confusion Matrix
+- **Architecture**: Simple but effective CNN
+- **Input shape**: ` (11766, 157, 40, 3)` representing MFCC + delta + delta-delta + augumentation
+- **Final Accuracy**: **81%**
+- **Callbacks Used**:
+  - `EarlyStopping` (patience=10)
+  - `ReduceLROnPlateau` (factor=0.5, patience=3)
 
-<p align="center">
-  <img src="ba9482ce-a79c-4433-baaf-1ed977f18cc3.png" alt="Confusion Matrix" width="500"/>
-</p>
+---
+So each training example is a 3-channel spectrogram of shape (157, 40, 3) representing:
 
-### 🧾 Classification Report
+157 time steps (rows)
 
-          precision    recall  f1-score   support
+40 MFCC-related features (columns)
 
-   angry       0.87      0.91      0.89        75
-    calm       0.90      0.81      0.85        75
- disgust       0.94      0.77      0.85        39
- fearful       0.73      0.81      0.77        75
-   happy       0.79      0.79      0.79        75
- neutral       0.80      0.87      0.84        38
-     sad       0.78      0.71      0.74        75
+3 channels:
 
+Channel 1 → MFCC
+
+Channel 2 → First-order delta (rate of change)
+
+Channel 3 → Second-order delta (acceleration)
+
+This makes each input comparable to a colored image (like RGB channels), which is why a CNN can process it effectively.
+
+
+## 📈 Model Evaluation
+
+### Confusion Matrix
+<img src="https://github.com/YOUR_USERNAME/YOUR_REPO/raw/main/assets/confusion_matrix.png" alt="Confusion Matrix" width="500"/>
+
+### Classification Report
+
+| Emotion   | Precision | Recall | F1-Score | Support |
+|-----------|-----------|--------|----------|---------|
+| Angry     | 0.87      | 0.91   | 0.89     | 75      |
+| Calm      | 0.90      | 0.81   | 0.85     | 75      |
+| Disgust   | 0.94      | 0.77   | 0.85     | 39      |
+| Fearful   | 0.73      | 0.81   | 0.77     | 75      |
+| Happy     | 0.79      | 0.79   | 0.79     | 75      |
+| Neutral   | 0.80      | 0.87   | 0.84     | 38      |
+| Sad       | 0.78      | 0.71   | 0.74     | 75      |
+| Surprised | 0.74      | 0.87   | 0.80     | 39      |
+
+- **Macro avg**: 0.82 precision, 0.82 recall, 0.82 f1-score
+- **Weighted avg**: 0.82 precision, 0.81 recall, 0.81 f1-score
 
 ---
 
-## 🧠 Overview
+## 🔍 Data Challenges
 
-Given a raw audio file (WAV/MP3), this system:
-
-1. Preprocesses the signal to a fixed length
-2. Extracts MFCC and its derivatives
-3. Predicts one of the following 8 emotions:
-   - Neutral
-   - Calm
-   - Happy
-   - Sad
-   - Angry
-   - Fearful
-   - Disgust
-   - Surprised
+- Audio samples were short and variable in length.
+- Dataset was moderately imbalanced.
+- Extracting robust features from noisy environments was difficult.
+- Limited sample size affected complex model generalization.
 
 ---
 
-## 📊 Dataset
+## 🔁 Data Augmentation
 
-The model is trained on the [RAVDESS](https://zenodo.org/record/1188976) emotional speech dataset.
+Each audio sample was **augmented 6 times** to improve generalization:
 
+1. **Add Noise**
+2. **Pitch Up**
+3. **Pitch Down**
+4. **Time Stretch Fast (1.2x)**
+5. **Time Stretch Slow (0.8x)**
+6. **Original**
 
 ---
-- 📉 **Limited Data**: Achieving high performance was challenging due to the relatively small size of the dataset. This was mitigated using targeted data augmentation techniques like noise addition, pitch shifting, and time stretching to improve generalization.
 
+🔍 Why Simple CNN Worked Better than Advanced Models
+Although combinations like CNN+LSTM, CNN+BiLSTM, and CNN+GRU were experimented with, they didn't yield better accuracy. Here's why:
 
-## 🎛️ Data Augmentation Strategy
+Limited Data Size: These hybrid models have a higher number of parameters and tend to overfit when trained on relatively small datasets.
 
-To improve generalization and increase training data 6×, we applied the following augmentations on each sample:
+Temporal Complexity Not Needed: Since MFCC, delta, and delta-delta already capture temporal dynamics effectively, adding LSTM/GRU layers may have been redundant or even counterproductive.
 
-```python
-# 1. Add Gaussian noise
-noisy = add_noise(signal)
+Padding & Alignment: The time-distributed structure required by LSTM-based architectures is sensitive to sequence length and alignment, which can lead to inconsistencies.
 
-# 2. Pitch up
-pitch_up = shift_pitch(signal, sr, n_steps=+2)
+Augmentation Noise: Some augmentations (like pitch-shifting and time-stretching) may have introduced variability that affected sequence modeling more than CNN's local pattern detection.
 
-# 3. Pitch down
-pitch_down = shift_pitch(signal, sr, n_steps=-2)
+CNN Sufficiency: The simpler CNN was sufficient to learn relevant features from 2D MFCC maps without needing recurrent memory.
+---
 
-# 4. Time stretch (faster)
-stretch_fast = time_stretch(signal, rate=1.2)
+## 🚀 Streamlit App
 
-# 5. Time stretch (slower)
-stretch_slow = time_stretch(signal, rate=0.8)
+You can test your audio directly using our web app.
 
-
-## 🤔 Why Simple CNN Outperformed Complex Models
-
-Although various advanced architectures were explored—such as **CNN + LSTM**, **CNN + GRU**, and **CNN + BiLSTM**—they **failed to outperform** the simpler CNN model, even after aggressive data augmentation.
-
-### 🔑 Key Reasons:
-
-1. **📊 Dataset Still Limited**
-   - Despite 6x augmentation, the core dataset lacked **diversity in real emotional variation** (speaker, language, tone).
-   - Larger and deeper models like LSTMs tend to **overfit quickly** when real-world diversity is low.
-
-2. **🎭 Augmentation ≠ Real Emotion Diversity**
-   - Pitch shifting, noise, and time-stretching introduce variability but **don’t truly replicate emotional nuance**.
-   - These synthetic transformations may cause RNNs to **memorize augmentation patterns** instead of general emotion cues.
-
-3. **🧠 MFCCs Already Summarize Audio**
-   - MFCCs are short-time spectral features; applying LSTMs or GRUs on them doesn’t add much because **temporal dynamics are already compressed**.
-   - CNNs are **more efficient** at learning local acoustic patterns in these fixed-size feature maps.
-
-4. **⏱️ Limited Sequence Complexity**
-   - LSTMs are designed for long-term dependencies (e.g., text, long audio).
-   - Here, each clip is **cropped/padded to 5 seconds**, and emotions tend to manifest in **short-term spectral cues** (which CNNs can detect well).
-
-5. **⚙️ Simpler Model = Better Regularization**
-   - The CNN architecture, with **batch normalization**, **dropout**, and **early stopping**, generalized better.
-   - Complex models required **more tuning and regularization** and still showed instability or poor convergence.
-
-### ✅ Conclusion:
-The CNN architecture struck the **perfect balance** between complexity and generalizability for this dataset. It learned robust representations without overfitting — making it the best-performing model for this emotion classification task.
-
-## 🚀 Running the App
-
-To launch the audio emotion recognition web app locally using Streamlit:
-
+### Run the App:
 ```bash
 streamlit run app.py

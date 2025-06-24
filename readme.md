@@ -31,7 +31,7 @@ This makes each input comparable to a colored image (like RGB channels), which i
 ## 📈 Model Evaluation
 
 ### Confusion Matrix
-<img src="https://github.com/YOUR_USERNAME/YOUR_REPO/raw/main/assets/confusion_matrix.png" alt="Confusion Matrix" width="500"/>
+<img src="https://github.com/iota765/audio_emotion_detection/blob/main/download.png" alt="Confusion Matrix" width="500"/>
 
 ### Classification Report
 

@@ -35,7 +35,7 @@ This makes each input comparable to a colored image (like RGB channels), which i
 
 ### Classification Report
 
-    precision    recall  f1-score   support
+                  precision    recall  f1-score   support
 
        angry       0.90      0.92      0.91        75
         calm       0.88      0.92      0.90        75

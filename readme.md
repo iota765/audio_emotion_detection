@@ -33,23 +33,20 @@ This makes each input comparable to a colored image (like RGB channels), which i
 ### Confusion Matrix
 <img src="https://github.com/iota765/audio_emotion_detection/blob/main/download.png?raw=true" alt="Confusion Matrix" width="500"/>
 
-### Classification Report
-
-                  precision    recall  f1-score   support
-
-       angry       0.90      0.92      0.91        75
-        calm       0.88      0.92      0.90        75
-     disgust       0.84      0.79      0.82        39
-     fearful       0.82      0.79      0.80        75
-       happy       0.89      0.87      0.88        75
-     neutral       0.85      0.89      0.87        38
-         sad       0.83      0.80      0.82        75
-   surprised       0.76      0.82      0.79        39
-
-    accuracy                           0.85       491
-   macro avg       0.85      0.85      0.85       491
-weighted avg       0.85      0.85      0.85       491
-
+| Emotion   | Precision | Recall | F1-Score | Support |
+| --------- | --------- | ------ | -------- | ------- |
+| Angry     | 0.90      | 0.92   | 0.91     | 75      |
+| Calm      | 0.88      | 0.92   | 0.90     | 75      |
+| Disgust   | 0.84      | 0.79   | 0.82     | 39      |
+| Fearful   | 0.82      | 0.79   | 0.80     | 75      |
+| Happy     | 0.89      | 0.87   | 0.88     | 75      |
+| Neutral   | 0.85      | 0.89   | 0.87     | 38      |
+| Sad       | 0.83      | 0.80   | 0.82     | 75      |
+| Surprised | 0.76      | 0.82   | 0.79     | 39      |
+Accuracy: 0.85
+Macro Avg F1-Score: 0.85
+Weighted Avg F1-Score: 0.85
+Total Samples: 491
 
 ---
 

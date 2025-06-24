@@ -54,7 +54,6 @@ This makes each input comparable to a colored image (like RGB channels), which i
 ## 🔍 Data Challenges
 
 - Audio samples were short and variable in length.
-- Dataset was moderately imbalanced.
 - Extracting robust features from noisy environments was difficult.
 - Limited sample size affected complex model generalization.
 
@@ -84,8 +83,7 @@ Padding & Alignment: The time-distributed structure required by LSTM-based archi
 
 Augmentation Noise: Some augmentations (like pitch-shifting and time-stretching) may have introduced variability that affected sequence modeling more than CNN's local pattern detection.
 
-CNN Sufficiency: The simpler CNN was sufficient to learn relevant features from 2D MFCC maps without needing recurrent memory.
----
+
 
 ## 🚀 Streamlit App
 

@@ -5,7 +5,7 @@
 
 - **Architecture**: Simple but effective CNN
 - **Input shape**: ` (11766, 157, 40, 3)` representing MFCC + delta + delta-delta + augumentation
-- **Final Accuracy**: **81%**
+- **Final Accuracy on Validation Set**: **85%**
 - **Callbacks Used**:
   - `EarlyStopping` (patience=10)
   - `ReduceLROnPlateau` (factor=0.5, patience=3)
